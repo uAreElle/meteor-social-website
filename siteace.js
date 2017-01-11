@@ -26,10 +26,15 @@ if (Meteor.isClient) {
 			// example of how you can access the id for the website in the database
 			// (this is the data context for the template)
 			var website_id = this._id;
+
 			console.log("Up voting website with id "+website_id);
+			
 			// put the code in here to add a vote to a website!
-			//var rating = $(event.currentTarget).data("userrating");
-			//console.log("Website: "+website_id+" rating now: "+rating);
+			var upvote; 
+			Websites.update({_id:website_id},
+							{$set: {upvote: this.upvote+1}});
+
+			console.log("Website: "+website_id+" upvote now: "+(this.upvote+1));
 
 			return false;// prevent the button from reloading the page
 		}, 
@@ -41,6 +46,10 @@ if (Meteor.isClient) {
 			console.log("Down voting website with id "+website_id);
 
 			// put the code in here to remove a vote from a website!
+			var downvote;
+			Websites.update({_id:website_id},
+							{$set: {downvote: this.downvote+1}});
+			console.log("Website: "+website_id+" downvote now: "+(this.downvote+1));
 
 			return false;// prevent the button from reloading the page
 		}
@@ -58,7 +67,7 @@ if (Meteor.isClient) {
 			console.log("The url they entered is: "+url);
 			
 			// get title and description out of form:
-			var title, description;
+			var title, description, upvote, downvote;
 			title = event.target.title.value;
 			description = event.target.description.value;
 
@@ -68,6 +77,8 @@ if (Meteor.isClient) {
 					url:url,
 					title:title,
 					description:description,
+					upvote:0,
+					downvote:0
 				})
 			}
 
@@ -106,25 +117,33 @@ if (Meteor.isServer) {
     		title:"Goldsmiths Computing Department", 
     		url:"http://www.gold.ac.uk/computing/", 
     		description:"This is where this course was developed.", 
-    		createdOn:new Date()
+    		createdOn:new Date(),
+    		upvote:0,
+    		downvote:0
     	});
     	 Websites.insert({
     		title:"University of London", 
     		url:"http://www.londoninternational.ac.uk/courses/undergraduate/goldsmiths/bsc-creative-computing-bsc-diploma-work-entry-route", 
     		description:"University of London International Programme.", 
-    		createdOn:new Date()
+    		createdOn:new Date(),
+    		upvote:0,
+    		downvote:0
     	});
     	 Websites.insert({
     		title:"Coursera", 
     		url:"http://www.coursera.org", 
     		description:"Universal access to the world’s best education.", 
-    		createdOn:new Date()
+    		createdOn:new Date(),
+    		upvote:0,
+    		downvote:0
     	});
     	Websites.insert({
     		title:"Google", 
     		url:"http://www.google.com", 
     		description:"Popular search engine.", 
-    		createdOn:new Date()
+    		createdOn:new Date(),
+    		upvote:0,
+    		downvote:0
     	});
     }
   });
