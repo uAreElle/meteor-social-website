@@ -16,6 +16,7 @@
 	</nav>
 
 	<div class="container">
+		<!-- greeting with username -->
 	 	<h1> Welcome to social website aggregator {{username}}!</h1>
 		{{> website_form}}
 		{{> website_list}}
@@ -62,6 +63,8 @@
 	<a href="{{url}}">{{title}}</a>
 	<p>
 		{{description}}
+		<!-- include upload date and user -->
+		<br/><span>(Created: {{createdOn}} <br/> Submitted by: {{user}})</span>
 	</p>
 	<div class="vote-buttons">
 	<a href="#" class="btn btn-default js-upvote">

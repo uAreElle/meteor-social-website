@@ -16,6 +16,30 @@ if (Meteor.isClient) {
 		}
 	});
 
+	// helper function to provide username
+	Template.body.helpers({username:function(){
+		if(Meteor.user()){ //user logged in
+			return Meteor.user().username;
+			// provides e-mail
+			//sreturn Meteor.user().emails[0].address;
+		}
+		else {
+			return "anonymous";
+		}
+	}
+	});
+
+	Accounts.ui.config({	// adds username field to signup form
+		passwordSignupFields: "USERNAME_AND_EMAIL"
+	});
+
+	// helper function to sort by highest rated sites first
+	Template.website_list.helpers({
+		websites:function(){
+			return Websites.find({}, {sort:{upvote:-1}}); // -1 does ascending order
+		}
+	})
+
 
 	/////
 	// template events 
@@ -30,7 +54,6 @@ if (Meteor.isClient) {
 			console.log("Up voting website with id "+website_id);
 			
 			// put the code in here to add a vote to a website!
-			var upvote; 
 			Websites.update({_id:website_id},
 							{$set: {upvote: this.upvote+1}});
 
@@ -46,7 +69,6 @@ if (Meteor.isClient) {
 			console.log("Down voting website with id "+website_id);
 
 			// put the code in here to remove a vote from a website!
-			var downvote;
 			Websites.update({_id:website_id},
 							{$set: {downvote: this.downvote+1}});
 			console.log("Website: "+website_id+" downvote now: "+(this.downvote+1));
@@ -66,7 +88,7 @@ if (Meteor.isClient) {
 			var url = event.target.url.value;
 			console.log("The url they entered is: "+url);
 			
-			// get title and description out of form:
+			// get title and description out of form and declare votes:
 			var title, description, upvote, downvote;
 			title = event.target.title.value;
 			description = event.target.description.value;
@@ -77,8 +99,10 @@ if (Meteor.isClient) {
 					url:url,
 					title:title,
 					description:description,
+					createdOn:new Date(),
 					upvote:0,
-					downvote:0
+					downvote:0,
+					user:Meteor.user().username
 				})
 			}
 
@@ -87,23 +111,6 @@ if (Meteor.isClient) {
 		}
 	});
 
-	// helper function to provide username
-	Template.body.helpers({username:function(){
-		if(Meteor.user()){ //user logged in
-			return Meteor.user().username;
-			// provides e-mail
-			//return Meteor.user().emails[0].address;
-		}
-		else {
-			return "anonymous";
-		}
-	}
-	});
-
-	// user username instead of e-mail when greeting
-	Accounts.ui.config({	// adds username field to signup form
-		passwordSignupFields: "USERNAME_AND_EMAIL"
-	});
 }
 
 
