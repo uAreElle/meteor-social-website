@@ -1,0 +1,162 @@
+<head>
+  <title>siteace</title>
+</head>
+
+<body>
+
+
+</body>
+
+<template name="ApplicationLayout">	<!-- global template -->
+	{{> yield "navbar"}}
+	<div class="container">
+		{{> yield "hello"}}
+		{{> yield "form"}}
+		{{> yield "main"}}
+		<br/>
+		{{> yield "cform"}}
+		{{> yield "comments"}}
+	</div>
+</template>
+
+<template name="welcome">
+	<div class="container">
+		<!-- greeting with username -->
+	 	<h1> Welcome to the Social Website Aggregator, {{username}}!</h1>
+      	<!-- <a href="/websites" class="btn btn-info">ENTER</a> -->	
+	</div>
+</template>
+
+<template name="navbar">
+	<!-- navbar  - you will be putting the login functions here -->
+	<nav class="navbar navbar-default">
+	  <div class="container-fluid">
+		{{> loginButtons}} <!-- provided by accounts-ui -->
+	    <div class="navbar-header">
+	      <a class="navbar-brand" href="/">
+	        Site Ace
+	      </a>
+	    </div><!-- /navbar -->
+	  </div><!-- /container -->
+	</nav>
+
+</template>
+
+<template name="website_form">
+	<a class="btn btn-default js-toggle-website-form" href="#">
+  		<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+	</a>
+	<div id="website_form" class="hidden_div">
+		<form class="js-save-website-form">
+		  <div class="form-group">
+		    <label for="url">Site address (include "http://" or "https://"")</label>
+		    <input type="text" class="form-control" id="url" placeholder="Example: http://www.amazon.com/">
+		  </div>
+		  <p>Can skip to Submit if proper url entered. Following fields will be auto-completed.</p>
+		  <div class="form-group">
+		    <label for="title">Title</label>
+		    <input type="text" class="form-control" id="title" placeholder="Mysite">
+		  </div>
+		    <div class="form-group">
+		    <label for="description">Description</label>
+		    <input type="text" class="form-control" id="description" placeholder="I found this site really useful for ...">
+		  </div>
+
+		  <button type="submit" class="btn btn-success">Submit</button>
+		</form>
+	</div>
+</template>
+
+<!-- template that displays several website items -->
+<template name="website_list">
+	<ol>
+	{{#each websites}}
+	{{>website_item}}
+	{{/each}}
+	</ol>
+</template>
+
+<!-- template that displays individual website entries -->
+<template name="website_item">
+<li>
+	<a href="{{_id}}">{{title}}</a>	<!-- use {{_id}} instead of {{url}} to make easier to access detail page-->
+	<p>
+		{{description}}
+		<!-- include upload date and user -->
+		<br/><span>(Created: {{createdOn}} <br/> Submitted by: {{submittedBy}})</span>
+	</p>
+	<div class="vote-buttons">
+	<a href="#" class="btn btn-default js-upvote">
+		<span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 
+		<span>{{upvote}}</span>	<!-- upvote count displayed next to icon -->
+	</a>
+	<a href="#" class="btn btn-default js-downvote">
+		<span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
+		<span>{{downvote}}</span> <!-- downvote count displayed next to icon -->
+	</a>
+	<!-- you will be putting your up and down vote buttons in here! --> 
+	</div>
+</li>
+</template>
+
+<!-- Detail Page and Comments Section -->
+
+<!-- template that displays individual website's detail -->
+<template name="website_detail">
+<div class="container">
+	<a href="/" class="glyphicon glyphicon-triangle-left"><span>Return</span></a> <!-- use / to go back to home -->
+	<br/>
+	<a href={{url}}><h1>{{title}}</h1></a>
+	<p>
+		{{description}}
+		<!-- include upload date and user -->
+		<br/><span>(Created: {{createdOn}} <br/> Submitted by: {{submittedBy}})</span>
+	</p>
+	<br/>
+	<div class="vote-buttons">
+	<a href="#" class="btn btn-default js-upvote">
+		<span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span> 
+		<span>{{upvote}}</span>	<!-- upvote count displayed next to icon -->
+	</a>
+	<a href="#" class="btn btn-default js-downvote">
+		<span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span>
+		<span>{{downvote}}</span> <!-- downvote count displayed next to icon -->
+	</a>
+	<!-- you will be putting your up and down vote buttons in here! --> 
+	</div>
+</div>
+</template>
+
+<!-- template that displays the form to submit a new comment -->
+<!-- similar to website_form -->
+<template name="comment_form">
+    <div id="comment_form">
+        <form class="js-save-comment-form">
+          <div class="form-group">
+            <input type="text" class="form-control" id="comment" placeholder="Enter your comment">
+          </div>
+
+          <button type="submit" class="btn btn-primary">Submit Comment</button>
+        </form>
+    </div>
+</template>
+
+<!-- template that displays several comment items -->
+<!-- similar to website_list -->
+<template name="comment_list">
+	<h3>Comments</h3>
+	<ol>
+	{{#each comments}}
+	{{>comment_item}}
+	{{/each}}
+	</ol>
+</template>
+
+<!-- template that displays individual comment entries -->
+<!-- similar to website_item -->
+<template name="comment_item">
+    <li>
+        {{comment}}
+        <p class="comment-meta">Posted {{createdOn}} by {{writtenBy}}</p>
+    </li>
+</template>

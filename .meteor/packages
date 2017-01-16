@@ -16,7 +16,6 @@ es5-shim@4.6.15                # ECMAScript 5 compatibility for older browsers.
 ecmascript@0.6.1              # Enable ECMAScript2015+ syntax in app code
 
 autopublish@1.0.7             # Publish all data to the clients (for prototyping)
-insecure@1.0.7                # Allow all DB writes from clients (for prototyping)
 twbs:bootstrap
 standard-minifier-css@1.3.2
 standard-minifier-js@1.2.1
@@ -25,3 +24,6 @@ accounts-password@1.3.3
 shell-server
 barbatus:stars-rating
 momentjs:moment
+insecure
+iron:router
+http
